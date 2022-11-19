@@ -1,0 +1,42 @@
+{
+  "lang": {
+
+    "default": "en",
+
+    "en": {
+      "name": "English",
+      "flag": "en",
+      "locale": "en_US"
+    },
+
+    "es": {
+      "name": "Español",
+      "flag": "es",
+      "locale": "es_MX"
+    }
+  },
+
+  "messages": {
+    "en_US": {
+      "success": {
+        "transcription": "# Transcription successful",
+        "translation": "# Translation successful"
+      },
+      "info": {
+        "cancelled": "# to send voice message cancelled",
+        "wait": "# Analyzing voice message, please wait...",
+        "send_audio": "# Send voice message to analyze",
+        "analyzing": "# Analyzing voice message, please wait..."
+      },
+      "error": {
+        "download": "# Error downloading voice message",
+        "analizing": "# Error analyzing voice message",
+        "upload": "# Error uploading voice message",
+        "send": "# Error sending result to voice message",
+        "unknown": "# Unknown error",
+        "no_voice": "# No voice message found",
+        "transcription": "# Error transcribing voice message"
+      }
+    }
+  }
+}

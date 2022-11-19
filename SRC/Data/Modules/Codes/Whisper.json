@@ -1,0 +1,23 @@
+{
+  "Lang": "English",
+
+  "English": {
+    "/whisper": {
+      "Desc": ["Language recognition, translation to english and transcription"],
+      "Args": [
+        {
+          "-d": "Command Description",
+          "-l": "List command arguments",
+          "-transcribe": "Transcribe the voice notes",
+          "-translate": "Translate the voice notes"
+        }
+      ]
+    }
+  },
+  "Spanish": {
+    "/f1": {}
+  },
+  "French": {
+    "/f1": {}
+  }
+}
