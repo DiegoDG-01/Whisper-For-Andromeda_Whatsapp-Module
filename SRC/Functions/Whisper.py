@@ -91,7 +91,7 @@ class Whisper:
         elif self.Argument == '-l':
             return self.ListArgs()
         elif self.Argument == '-transcribe':
-            return self.Transcribe()
+            return self.init_function('Transcribe')
         else:
             return False
 
@@ -110,22 +110,17 @@ class Whisper:
 
         return ListToMessage
 
-    def Translate_To_English(self):
-
-        self.Communicate.WriteMessage("# Please send the audio to translate to english")
-        self.Communicate.SendMessage()
-
-    def Transcribe(self):
-
-        Name_Audio = "audio.wav"
-        PathDownload = str(Path(self.BasePath + "/Data/WhatsApp/Downloads/"))
-
-        self.Communicate.WriteMessage(self.WhisperMessages['info']['send_audio'])
-        self.Communicate.SendMessage()
+    def init_function(self, FunctionName):
 
         try:
+            Name_Audio = "audio.wav"
+            PathDownload = str(Path(self.BasePath + "/Data/WhatsApp/Downloads/"))
+
+            self.Communicate.WriteMessage(self.WhisperMessages['info']['send_audio'])
+            self.Communicate.SendMessage()
+
             while True:
-                response = self.Communicate.ReadMediaResponse('_3ojyC')
+                response = self.Communicate.ReadMediaResponse('_3QeR3')
 
                 # Use function to validate
                 if response is not False:
@@ -144,22 +139,37 @@ class Whisper:
 
             path_audio = str(Path(PathDownload + '/' + last_download))
 
-            ogg_version = AudioSegment.from_ogg(path_audio)
-            ogg_version.export(str(Path(PathDownload + '/' + Name_Audio)), format="wav")
-
-            self.Communicate.WriteMessage(self.WhisperMessages['info']['analyzing'])
-            self.Communicate.SendMessage()
-
-            result = self.model.transcribe(str(Path(PathDownload + '/' + Name_Audio)), fp16=False)
-
-            self.Communicate.WriteMessage(self.WhisperMessages['success']['transcription'])
-            self.Communicate.SendMessage()
-
-            return ["", '>> '+result["text"]]
-
+            if FunctionName == 'Translate':
+                return self.Translate(Path_Download=PathDownload, Path_Audio=path_audio)
+            elif FunctionName == 'Transcribe':
+                return self.Transcribe(Path_Download=PathDownload, Path_Audio=path_audio)
+            else:
+                return ["", self.WhisperMessages['error']['unknown']]
         except Exception as error:
             self.log.Write("Whisper.py | Transcribe # " + str(error))
             return ["", self.WhisperMessages['error']['transcription']]
         finally:
             remove(str(Path(PathDownload + '/' + Name_Audio)))
             remove(str(Path(PathDownload + '/' + last_download)))
+
+    def Translate(self):
+        return self.WhisperMessages['error']['unknown']
+
+    def Transcribe(self, Path_Download, Path_Audio, Name_Audio='audio.wav'):
+        try:
+            ogg_version = AudioSegment.from_ogg(Path_Audio)
+            ogg_version.export(str(Path(Path_Download + '/' + Name_Audio)), format="wav")
+
+            # self.Communicate.WriteMessage(self.WhisperMessages['info']['analyzing'])
+            # self.Communicate.SendMessage()
+
+            result = self.model.transcribe(str(Path(Path_Download + '/' + Name_Audio)), fp16=False)
+
+            # self.Communicate.WriteMessage(self.WhisperMessages['success']['transcription'])
+            # self.Communicate.SendMessage()
+
+            return ["", '>> '+result["text"]]
+
+        except Exception as error:
+            self.log.Write("Whisper.py | Transcribe # " + str(error))
+            return ["", self.WhisperMessages['error']['transcription']]
